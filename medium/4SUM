@@ -1,0 +1,60 @@
+import java.util.*;
+
+class Solution {
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+        List<List<Integer>> result = new ArrayList<>();
+        int n = nums.length;
+        if (n < 4) return result;
+
+        Arrays.sort(nums); 
+
+        for (int i = 0; i < n - 3; i++) {
+
+           
+            if (i > 0 && nums[i] == nums[i - 1]) continue;
+
+            for (int j = i + 1; j < n - 2; j++) {
+
+                // пропускаем одинаковые nums[j] для фиксированного i
+                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+
+                int left = j + 1;
+                int right = n - 1;
+
+                while (left < right) {
+                   
+                    long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
+
+                    if (sum == target) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
+
+                        int leftVal = nums[left];
+                        int rightVal = nums[right];
+
+                        // пропускаем дубликаты слева
+                        while (left < right && nums[left] == leftVal) {
+                            left++;
+                        }
+
+                        // пропускаем дубликаты справа
+                        while (left < right && nums[right] == rightVal) {
+                            right--;
+                        }
+
+                    } else if (sum < target) {
+                        left++;   // нужно увеличить сумму
+                    } else {
+                        right--;  // нужно уменьшить сумму
+                    }
+                }
+            }
+        }
+
+        return result;
+    }
+}
+
+// Суть задачи такая же, теперь у нас 4 ползунка
+// важно пропустить дубликаты, это выполняется с помощью цикла while 
+// еще одна отличительная особенность, что в этой задаче важно учесть, что сумма может выйти за пределы интового значения, поэтому мы 
+// изменяем тип данных с интового значения на лонговое 

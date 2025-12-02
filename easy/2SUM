@@ -1,0 +1,15 @@
+class Solution {
+    public int[] twoSum(int[] nums, int target) {
+        for (int i = 0; i < nums.length; i ++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                if (nums[i] + nums[j] == target) {
+                    return new int[] {i, j};
+
+                } 
+            }
+        }
+        return new int[] {};
+    }
+}
+// суть в том, что мы ставим два ползунка i и j так, что они одновременно шагают вперед на один шаг до конца массива и сранивают сумму чисел итой
+// и джитой с таргет , найдя возвращают номера индексов искомых чисел для суммы

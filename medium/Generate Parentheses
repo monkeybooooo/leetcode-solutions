@@ -1,22 +1,52 @@
+import java.util.ArrayList;
+import java.util.List;
+
+/*
+ * Задача: Generate Parentheses
+ * Сложность: Medium
+ * Тема: рекурсия, backtracking
+ *
+ * Идея:
+ * Строим строку скобок рекурсивно.
+ * Открывающую скобку можно добавить, если их количество меньше n.
+ * Закрывающую скобку можно добавить только тогда, когда уже открытых
+ * скобок больше, чем закрытых.
+ *
+ * Когда длина строки становится равной 2 * n, добавляем её в результат.
+ *
+ * Временная сложность: O(4^n / sqrt(n))
+ * Пространственная сложность: O(n), если не учитывать результат
+ */
+
 class Solution {
     public List<String> generateParenthesis(int n) {
-        List<String> a = new ArrayList<String>();
-        recurse(a, 0, 0, "", n);
-        return a;
+        List<String> result = new ArrayList<>();
+        backtrack(result, new StringBuilder(), 0, 0, n);
+        return result;
     }
 
-        public void recurse(List<String> a, int left, int right, String s, int n) {
-            if(s.length() == n * 2) {
-                a.add(s);
-                return;
-            }
-            if (left < n) {
-                recurse(a, left + 1, right, s + "(", n);
-            }
-            if (right<left) {
-                recurse(a, left, right + 1, s + ")", n);
-            }
+    private void backtrack(
+        List<String> result,
+        StringBuilder current,
+        int open,
+        int close,
+        int n
+    ) {
+        if (current.length() == 2 * n) {
+            result.add(current.toString());
+            return;
         }
-        
-    
+
+        if (open < n) {
+            current.append('(');
+            backtrack(result, current, open + 1, close, n);
+            current.deleteCharAt(current.length() - 1);
+        }
+
+        if (close < open) {
+            current.append(')');
+            backtrack(result, current, open, close + 1, n);
+            current.deleteCharAt(current.length() - 1);
+        }
+    }
 }

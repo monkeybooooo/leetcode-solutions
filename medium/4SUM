@@ -1,60 +1,123 @@
-import java.util.*;
+import java.util.ArrayList;
+
+import java.util.Arrays;
+
+import java.util.List;
+
+/*
+
+ * Задача: 4Sum
+
+ * Сложность: Medium
+
+ * Тема: сортировка, два указателя
+
+ *
+
+ * Идея:
+
+ * Сначала сортируем массив. Затем фиксируем два числа nums[i] и nums[j],
+
+ * а оставшуюся пару ищем с помощью двух указателей left и right.
+
+ *
+
+ * Дубликаты пропускаются на всех уровнях, чтобы результат содержал
+
+ * только уникальные четвёрки.
+
+ *
+
+ * Для суммы используется тип long, потому что сумма четырёх int-значений
+
+ * может выйти за пределы диапазона int.
+
+ *
+
+ * Временная сложность: O(n^3)
+
+ * Пространственная сложность: O(1), если не учитывать результат
+
+ */
 
 class Solution {
-    public List<List<Integer>> fourSum(int[] nums, int target) {
-        List<List<Integer>> result = new ArrayList<>();
-        int n = nums.length;
-        if (n < 4) return result;
 
-        Arrays.sort(nums); 
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+
+        List<List<Integer>> result = new ArrayList<>();
+
+        if (nums.length < 4) {
+
+            return result;
+
+        }
+
+        Arrays.sort(nums);
+
+        int n = nums.length;
 
         for (int i = 0; i < n - 3; i++) {
 
-           
-            if (i > 0 && nums[i] == nums[i - 1]) continue;
+            if (i > 0 && nums[i] == nums[i - 1]) {
+
+                continue;
+
+            }
 
             for (int j = i + 1; j < n - 2; j++) {
 
-                // пропускаем одинаковые nums[j] для фиксированного i
-                if (j > i + 1 && nums[j] == nums[j - 1]) continue;
+                if (j > i + 1 && nums[j] == nums[j - 1]) {
+
+                    continue;
+
+                }
 
                 int left = j + 1;
+
                 int right = n - 1;
 
                 while (left < right) {
-                   
+
                     long sum = (long) nums[i] + nums[j] + nums[left] + nums[right];
 
                     if (sum == target) {
+
                         result.add(Arrays.asList(nums[i], nums[j], nums[left], nums[right]));
 
-                        int leftVal = nums[left];
-                        int rightVal = nums[right];
+                        left++;
 
-                        // пропускаем дубликаты слева
-                        while (left < right && nums[left] == leftVal) {
+                        right--;
+
+                        while (left < right && nums[left] == nums[left - 1]) {
+
                             left++;
+
                         }
 
-                        // пропускаем дубликаты справа
-                        while (left < right && nums[right] == rightVal) {
+                        while (left < right && nums[right] == nums[right + 1]) {
+
                             right--;
+
                         }
 
                     } else if (sum < target) {
-                        left++;   // нужно увеличить сумму
+
+                        left++;
+
                     } else {
-                        right--;  // нужно уменьшить сумму
+
+                        right--;
+
                     }
+
                 }
+
             }
+
         }
 
         return result;
-    }
-}
 
-// Суть задачи такая же, теперь у нас 4 ползунка
-// важно пропустить дубликаты, это выполняется с помощью цикла while 
-// еще одна отличительная особенность, что в этой задаче важно учесть, что сумма может выйти за пределы интового значения, поэтому мы 
-// изменяем тип данных с интового значения на лонговое 
+    }
+
+}

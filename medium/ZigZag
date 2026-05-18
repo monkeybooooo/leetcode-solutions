@@ -1,16 +1,41 @@
+/*
+ * Задача: Zigzag Conversion
+ * Сложность: Medium
+ * Тема: строки, моделирование
+ *
+ * Идея:
+ * Символы в zigzag-строке повторяются по циклу.
+ * Длина одного цикла равна 2 * (numRows - 1).
+ *
+ * Для каждой строки отдельно проходим по символам, которые должны попасть
+ * в эту строку. Для промежуточных строк дополнительно добавляем символ
+ * из диагональной части zigzag-шаблона.
+ *
+ * Временная сложность: O(n)
+ * Пространственная сложность: O(n)
+ */
+
 class Solution {
     public String convert(String s, int numRows) {
-        if (numRows == 1) return s;
-        
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < numRows; i ++) {
-            for (int j = i; j < s.length(); j += (2 * (numRows - 1))) {
-                sb.append(s.charAt(j));
-                if (i > 0 && i < numRows - 1 && j + (2 * (numRows - 1)) - (2 * i) < s.length()) {
-                    sb.append(s.charAt(j + (2 * (numRows - 1)) - (2 * i)));
+        if (numRows == 1) {
+            return s;
+        }
+
+        StringBuilder result = new StringBuilder();
+        int cycleLength = 2 * (numRows - 1);
+
+        for (int row = 0; row < numRows; row++) {
+            for (int index = row; index < s.length(); index += cycleLength) {
+                result.append(s.charAt(index));
+
+                int diagonalIndex = index + cycleLength - 2 * row;
+
+                if (row > 0 && row < numRows - 1 && diagonalIndex < s.length()) {
+                    result.append(s.charAt(diagonalIndex));
                 }
             }
         }
-        return sb.toString();
+
+        return result.toString();
     }
 }
